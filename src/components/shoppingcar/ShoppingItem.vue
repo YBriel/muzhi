@@ -5,21 +5,21 @@
     <van-check-box-group v-model="checkResult" :value=checkResult>
       <van-row v-for="(item,index) in orderCopy" :key="item.id">
         <van-col span="2">
-          <van-check-box class="checkClass" :id="index" :name="order[index].id"
+          <van-check-box class="checkClass" :id="index" :name="orderCopy[index].id"
                          @click="computePrice1(index)"/>
         </van-col>
         <van-col span="21">
           <van-swipe-cell>
             <van-card
-              :num=order[index].num
-              :price=order[index].price
-              :desc=order[index].desc
-              :title=order[index].title
+              :num=orderCopy[index].num
+              :price=orderCopy[index].price
+              :desc=orderCopy[index].desc
+              :title=orderCopy[index].title
               thumb="https://img.yzcdn.cn/vant/ipad.jpeg"
             >
               <div slot="footer">
                 <!--id=10086 step="1"   :value="order[index].num"-->
-                <van-stepper v-model="order[index].num" :max="order.length" name="aaa" @plus="stepperChange(index)"/>
+                <van-stepper v-model="orderCopy[index].num" :max="orderCopy.length" name="aaa" @change="stepperChange($event,index)"/>
               </div>
             </van-card>
             <van-button
@@ -43,11 +43,7 @@
 
   export default {
     props: {
-      order: {
-        Type: Array,
-        required: true
-      },
-      orderCopy: Array
+      order: Array
     },
     components: {
       VanCard: Card,
@@ -66,7 +62,8 @@
         imgUrl: './static/ani.ico',
         checkResult: [],
         totalPrice: 0,
-        isCheck: Boolean
+        isCheck: Boolean,
+        orderCopy:[]
       }
     },
     methods: {
@@ -74,20 +71,12 @@
         this.$emit('computeTotalPrice', this.orderCopy);
       },
       computePrice1(index) {
-        //console.log(index);
-        // this.totalPrice += 100;
+        //console.log("index是"+index);
         this.orderCopy[index].check = !this.orderCopy[index].check;
-       /* console.log(JSON.stringify(this.orderCopy));
-        PubSub.publish("totalPrice", this.totalPrice)*/
-        //console.log(event);
       },
-      checkChange() {
-        alert("000");
-      },
-      stepperChange(index) {
-        //console.log(index);
-        // console.log(this[i]);
-
+      stepperChange(e,index) {
+        this.orderCopy[index].num=e;
+        //console.log(JSON.stringify(this.orderCopy.length));
       },
       swipeDel(index) {
         this.orderCopy.splice(index, 1);
@@ -102,17 +91,11 @@
           }
         }
         for (let j = 0; j < tempArr.length; j++) {
-          tempTotalPrice += tempArr[j].price;
-
+          tempTotalPrice += tempArr[j].price*tempArr[j].num;
         }
-        this.totalPrice=tempTotalPrice;
+        this.totalPrice=tempTotalPrice*100;
         console.log("价格计算完成" + this.totalPrice);
       }
-    },
-    computed: {
-      /*   checkResult:function () {
-           console.log("checkResult变化了"+this.checkResult);
-         }*/
     },
     watch: {
       isCheck: function (newValue) {
@@ -128,10 +111,11 @@
           }
           this.checkResult = [];
         }
+        console.log(JSON.stringify(this.orderCopy));
       },
       orderCopy: {
         handler(newValue, oldValue) {
-            this.computePriceTemp();
+            this.computePriceTemp();//发送到父容器
         },
         deep: true
       },
@@ -140,12 +124,46 @@
       }
     },
     mounted() {
+      let orderElement = this.order;
+      for (let i = 0; i < orderElement.length; i++) {
+        let orderCopyTemp = {
+          id: 1,
+          price: 1,
+          num: 1,
+          check: true,
+          status: 1
+        };
+        orderCopyTemp.id = orderElement[i].id;
+        orderCopyTemp.price = orderElement[i].price;
+        orderCopyTemp.num = orderElement[i].num;
+        orderCopyTemp.check = false;
+        orderCopyTemp.status = 1;
+        this.orderCopy.push(orderCopyTemp);
+      }
       PubSub.subscribe("isCheck", (msg, isCheck) => {
         this.isCheck = isCheck;
-      })
+     /*   PubSub.subscribe("AddToCart", (msg, data) => {
+          let orderCopyTe = {
+            id: 1,
+            price: 1,
+            num: 1,
+            check: true,
+            status: 1
+          };
+          orderCopyTe.id = data.id;
+          orderCopyTe.price = data.price;
+          orderCopyTe.num = data.num;
+          orderCopyTe.check = true;
+          orderCopyTe.status = 1;
+          this.orderCopy.push(orderCopyTe);
+          console.log("新增一体"+JSON.stringify(data)+"----------------");
+        });*/
+      });
+
+    },
+    created() {
+
     }
-
-
   }
 
 </script>
