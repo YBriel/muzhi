@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div  v-for="(item,index) in siderbarGoods" :key="item.id">
+    <div v-for="(item,index) in siderbarGoods" :key="item.id">
       <van-card
         :desc=item.desc
         :title=item.title
@@ -8,7 +8,8 @@
         thumb="https://img.yzcdn.cn/vant/t-thirt.jpg"
       >
         <div slot="footer">
-          <van-icon size="25" style="margin-top: -20px" :id=item.id name="cart-o" @click="addShoppingCar($event,index)"/>
+          <van-icon size="25" style="margin-top: -20px" :id=item.id name="cart-o"
+                    @click="addShoppingCar($event,index)"/>
         </div>
       </van-card>
     </div>
@@ -17,8 +18,10 @@
 </template>
 
 <script>
-  import {Card, Button, Tag, Stepper, Icon} from 'vant';
+  import {Card, Button, Tag, Stepper, Icon, Notify, Toast} from 'vant';
   import PubSub from 'pubsub-js'
+  import Axios from "axios";
+
   export default {
     name: "Items",
     components: {
@@ -27,12 +30,13 @@
       VanTag: Tag,
       VanStepper: Stepper,
       VanIcon: Icon,
-      PubSub:PubSub
+      PubSub: PubSub,
+      Toast: Toast
     },
-    props:{
-      siderbarGoods:{
+    props: {
+      siderbarGoods: {
         Type: Array,
-        required:true
+        required: true
       }
     },
     data() {
@@ -44,11 +48,22 @@
       stepperChange(e) {
         console.log(JSON.stringify(e));
       },
-      addShoppingCar(e,index) {
-        //alert("tt")
-        PubSub.publish("AddToCart",this.siderbarGoods[index]);
-        console.log("发布消息"+e.currentTarget.id,JSON.stringify(this.siderbarGoods[index]));
-
+      addShoppingCar(e, index) {
+        console.log("sssssssssssssss");
+        PubSub.publish("AddToCart", this.siderbarGoods[index]);
+        //console.log("发布消息"+e.currentTarget.id,JSON.stringify(this.siderbarGoods[index]));
+        let params = new URLSearchParams();
+        params.append('userId', "4fdcaa35ccea4cb5b62926189c95bf45");
+        params.append('pid', 1004);
+        Axios.post("http://39.106.121.52:8088/mstore/addToCard", params).then((response) => {
+          let res = response.data;
+          console.log(JSON.stringify(res));
+          if (res.code === 200) {
+            Toast.success('加入购物车成功！');
+          } else {
+            Notify({type: 'danger', message: res.msg});
+          }
+        });
       }
     }
   }

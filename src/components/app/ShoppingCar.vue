@@ -6,7 +6,7 @@
         left-arrow/>
     </div>
     <div>
-      <ShoppingItems @computeTotalPrice="computeTotalPrice" :order="order" @swipeDel="swipeDel"/>
+      <ShoppingItems @computeTotalPrice="computeTotalPrice"  @swipeDel="swipeDel"/>
       <ShoppingSubmit/>
     </div>
   </div>
@@ -19,7 +19,8 @@
   import Footer from "../footer/Footer";
   import PubSub from 'pubsub-js'
 
-  import {NavBar} from 'vant';
+  import {NavBar, Notify, Toast} from 'vant';
+  import Axios from "axios";
 
   export default {
     components: {
@@ -34,26 +35,6 @@
         imgUrl: './static/ani.ico',
         totalPrice: 0,
         orderCopy: [],
-        order: [{
-          id: 10086,
-          price: 200,
-          num: 1,
-          desc: "中国移动",
-          title: "限购一件",
-        }, {
-          id: 10000,
-          price: 200,
-          num: 1,
-          desc: "中国电信",
-          title: "限购一件",
-        },
-          {
-            id: 10001,
-            price: 200,
-            num: 1,
-            desc: "中国联通",
-            title: "限购一件",
-          }]
       }
     },
     methods: {
@@ -67,7 +48,9 @@
         //console.log(JSON.stringify(this.orderCopy));
       }
     },
+    created() {
 
+    },
     mounted() {
     /*  let orderElement = this.order;
       for (let i = 0; i < orderElement.length; i++) {
@@ -105,6 +88,7 @@
         orderCopyTemp.status = 1;
         this.orderCopy.push(orderCopyTemp);
       });*/
+
     },
 
   }

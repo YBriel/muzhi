@@ -20,8 +20,8 @@
 
     data() {
       return {
-        picArr:["./static/icon/apple.png","./static/icon/banana.png","./static/icon/firedragon.png","/static/icon/mongo.png","./static/icon/orange.png",
-          "./static/icon/peach.png","./static/icon/watermelon.png","/static/icon/pear.png"]
+        picArr:["./static/icon/apple.png","./static/icon/banana.png","./static/icon/firedragon.png","./static/icon/mongo.png","./static/icon/orange.png",
+          "./static/icon/peach.png","./static/icon/watermelon.png","./static/icon/pear.png"]
       }
     },
     props: {

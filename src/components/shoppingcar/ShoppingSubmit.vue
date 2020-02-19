@@ -17,7 +17,6 @@ z
   import PubSub from 'pubsub-js'
 
   export default {
-
     components: {
       VanSubmitBar: SubmitBar,
       VanTag: Tag,
@@ -42,6 +41,9 @@ z
       PubSub.subscribe("newTotalPrice", (msg,totalPrice)=> {
         this.totalPrice=totalPrice;
       });
+      PubSub.subscribe("isAllCheck",(msg,data)=>{
+        this.selectAll=data;
+      })
     },
     methods:{
       submitFrom(){

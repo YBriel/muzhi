@@ -2,8 +2,8 @@
   <div>
     <!--  <van-button type="default" @click="printResult()">默认按钮</van-button>-->
 
-    <van-check-box-group v-model="checkResult" :value=checkResult>
-      <van-row v-for="(item,index) in orderCopy" :key="item.id">
+    <van-check-box-group v-model="checkResult" >
+      <van-row v-for="(item,index) in orderCopy" :key="index">
         <van-col span="2">
           <van-check-box class="checkClass" :id="index" :name="orderCopy[index].id"
                          @click="computePrice1(index)"/>
@@ -19,7 +19,7 @@
             >
               <div slot="footer">
                 <!--id=10086 step="1"   :value="order[index].num"-->
-                <van-stepper v-model="orderCopy[index].num" :max="orderCopy.length" name="aaa" @change="stepperChange($event,index)"/>
+                <van-stepper v-model="orderCopy[index].num" name="aaa" @change="stepperChange($event,index)"/>
               </div>
             </van-card>
             <van-button
@@ -38,13 +38,11 @@
 </template>
 
 <script>
-  import {Card, Button, Checkbox, CheckboxGroup, Cell, Stepper, SwipeCell, Col, Row} from 'vant';
+  import {Card, Button, Checkbox, CheckboxGroup, Cell, Stepper, SwipeCell, Col, Row, Toast, Notify} from 'vant';
   import PubSub from 'pubsub-js'
+  import Axios from "axios";
 
   export default {
-    props: {
-      order: Array
-    },
     components: {
       VanCard: Card,
       VanButton: Button,
@@ -72,7 +70,11 @@
       },
       computePrice1(index) {
         //console.log("index是"+index);
+
         this.orderCopy[index].check = !this.orderCopy[index].check;
+        if(this.orderCopy.length===1){
+          PubSub.publish("isAllCheck",this.orderCopy[index].check);
+        }
       },
       stepperChange(e,index) {
         this.orderCopy[index].num=e;
@@ -95,6 +97,21 @@
         }
         this.totalPrice=tempTotalPrice*100;
         console.log("价格计算完成" + this.totalPrice);
+      },
+      addItemToCard(data){
+        let orderCopyTemp = {
+          id: 1,
+          price: 1,
+          num: 1,
+          check: true,
+          status: 1
+        };
+        orderCopyTemp.id = data.id;
+        orderCopyTemp.price = data.price;
+        orderCopyTemp.num = 1;
+        orderCopyTemp.check = false;
+        orderCopyTemp.status = 1;
+        this.orderCopy.push(orderCopyTemp);
       }
     },
     watch: {
@@ -111,7 +128,7 @@
           }
           this.checkResult = [];
         }
-        console.log(JSON.stringify(this.orderCopy));
+       // console.log(JSON.stringify(this.orderCopy));
       },
       orderCopy: {
         handler(newValue, oldValue) {
@@ -124,7 +141,7 @@
       }
     },
     mounted() {
-      let orderElement = this.order;
+      /*let orderElement = this.order;
       for (let i = 0; i < orderElement.length; i++) {
         let orderCopyTemp = {
           id: 1,
@@ -139,30 +156,38 @@
         orderCopyTemp.check = false;
         orderCopyTemp.status = 1;
         this.orderCopy.push(orderCopyTemp);
-      }
+      }*/
       PubSub.subscribe("isCheck", (msg, isCheck) => {
         this.isCheck = isCheck;
-     /*   PubSub.subscribe("AddToCart", (msg, data) => {
-          let orderCopyTe = {
-            id: 1,
-            price: 1,
-            num: 1,
-            check: true,
-            status: 1
-          };
-          orderCopyTe.id = data.id;
-          orderCopyTe.price = data.price;
-          orderCopyTe.num = data.num;
-          orderCopyTe.check = true;
-          orderCopyTe.status = 1;
-          this.orderCopy.push(orderCopyTe);
-          console.log("新增一体"+JSON.stringify(data)+"----------------");
-        });*/
       });
-
+      PubSub.subscribe("AddToCart", (msg, data) => {
+        this.addItemToCard(data);
+       // console.log("新增一体"+JSON.stringify(data)+"----------------");
+      });
     },
     created() {
-
+      let params = new URLSearchParams();
+      params.append('id', "4fdcaa35ccea4cb5b62926189c95bf45");
+      Axios.post("http://39.106.121.52:8088/mstore/listCar", params).then((response) => {
+        let res = response.data;
+        console.log(res);
+        if (res.code === 200) {
+          for(let i=0;i<res.data.length;i++){
+            let tempOrder={
+              id: res.data[i].id,
+              price: res.data[i].price,
+              num: res.data[i].num,
+              desc: res.data[i].desc,
+              title: res.data[i].title,
+              check:false
+            };
+            this.orderCopy.push(tempOrder);
+          }
+          console.log(JSON.stringify( this.orderCopy));
+        } else {
+          Notify({type: 'danger', message: res.msg});
+        }
+      });
     }
   }
 
