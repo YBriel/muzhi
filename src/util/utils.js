@@ -2,7 +2,7 @@ export function setLocalStorage(key, value, expire) {
   let obj = {
     data: value,
     time: Date.now(),
-    expire: expire*3600
+    expire: expire*600000
   };
   //localStorage 设置的值不能为对象,转为json字符串
   localStorage.setItem(key, JSON.stringify(obj));

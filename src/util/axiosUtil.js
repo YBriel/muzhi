@@ -2,7 +2,7 @@ import axios from 'axios/index';
 import qs from 'qs';
 import {Toast} from 'vant';
 
-const devUrl = "http://127.0.0.1:8088/";
+const devUrl = "http://127.0.0.1:8088/mstore/";
 const ProductUrl = "http://39.106.121.52:8088/mstore/";
 
 axios.interceptors.request.use(config => {
@@ -71,7 +71,7 @@ export function postJson(url, data) {
     method: 'post',
     baseURL: '',
     url: devUrl + url,
-    data: qs.stringify(data),
+    data: data,
     //data: JSON.stringify(data),
     timeout: 1000,
     headers: {

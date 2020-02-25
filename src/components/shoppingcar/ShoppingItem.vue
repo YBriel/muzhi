@@ -225,20 +225,6 @@
          setLocalStorage("cart-to-pay",this.product1,720);
           this.$router.replace("/submitOrder");
         }
-        //console.log("收到提交订单请求"+data);
-        //this.toConfirmPage();
- /*       Axios.post("http://127.0.0.1:8088/mstore/aliPay/aliWapPay", this.product1).then((response) => {
-          let res = response.data;
-          if (res.code === 200) {
-            //支付宝支付
-            const div = document.createElement('div');
-            div.innerHTML = res.data; //此处form就是后台返回接收到的数据
-            document.body.appendChild(div);
-            document.forms[0].submit()
-          } else {
-            Notify({type: 'danger', message: res.msg});
-          }
-        });*/
       });
     },
     created() {

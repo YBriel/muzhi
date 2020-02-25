@@ -52,8 +52,6 @@
       },
       addShoppingCar(e, index) {
         let item = getLocalStorage("user-login-info"); //获取本地用户信息
-       // console.log("本地用户信息"+item.name);
-       // console.log("本地用户信息"+item);
         if(item===null){
           Toast.fail({duration:500, message:'请登录！'});
         }else {
