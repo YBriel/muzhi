@@ -21,6 +21,8 @@
   import {Card, Button, Tag, Stepper, Icon, Notify, Toast} from 'vant';
   import PubSub from 'pubsub-js'
   import Axios from "axios";
+  import {getLocalStorage} from "../../../util/utils";
+  import {post} from "../../../util/axiosUtil";
 
   export default {
     name: "Items",
@@ -46,24 +48,28 @@
     },
     methods: {
       stepperChange(e) {
-        console.log(JSON.stringify(e));
+        //console.log(JSON.stringify(e));
       },
       addShoppingCar(e, index) {
-        console.log("sssssssssssssss");
-        PubSub.publish("AddToCart", this.siderbarGoods[index]);
-        //console.log("发布消息"+e.currentTarget.id,JSON.stringify(this.siderbarGoods[index]));
-        let params = new URLSearchParams();
-        params.append('userId', "4fdcaa35ccea4cb5b62926189c95bf45");
-        params.append('pid', 1004);
-        Axios.post("http://39.106.121.52:8088/mstore/addToCard", params).then((response) => {
-          let res = response.data;
-          console.log(JSON.stringify(res));
-          if (res.code === 200) {
-            Toast.success('加入购物车成功！');
-          } else {
-            Notify({type: 'danger', message: res.msg});
-          }
-        });
+        let item = getLocalStorage("user-login-info"); //获取本地用户信息
+       // console.log("本地用户信息"+item.name);
+       // console.log("本地用户信息"+item);
+        if(item===null){
+          Toast.fail({duration:500, message:'请登录！'});
+        }else {
+          PubSub.publish("AddToCart", this.siderbarGoods[index]);
+          let params = new URLSearchParams();
+          params.append('userId', item.id);
+          params.append('pid', this.siderbarGoods[index].id);
+          post("addToCard",params).then(response=>{
+            let res = response.data;
+            if (res.code === 200) {
+              Toast.success('加入购物车成功！');
+            } else {
+              Notify({type: 'danger',duration:1500, message: res.msg});
+            }
+          });
+        }
       }
     }
   }

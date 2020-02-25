@@ -10,7 +10,7 @@
   import Category from './components/app/Category'
   import ShoppingCar from './components/app/ShoppingCar'
   import Mine from './components/app/Mine'
-  import Footer from './components/footer/Footer'
+  import Footer from './components/body/Footer'
 export default {
     components: {
       Home,

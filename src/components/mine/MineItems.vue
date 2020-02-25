@@ -8,6 +8,8 @@
     <van-cell icon="question-o" title="退换/售后" is-link to="index"/>
     <van-cell icon="share" title="注册" is-link to="MineRegister"/>
     <van-cell icon="share" title="登录" is-link to="login"/>
+<!--    <van-cell icon="share" title="测试页面" is-link to="testPage"/>
+    <van-cell icon="share" title="测试页面" is-link to="shoppingCarConfirm"/>-->
   </div>
 
 </template>

@@ -13,6 +13,7 @@
       name="密码"
       label="密码"
       placeholder="密码"
+      autocomplete=false
       :rules="[{ required: true, message: '请填写密码' }]"
     />
     <div style="margin: 16px;">
@@ -27,6 +28,8 @@
   import {Button, Form, Field, Notify} from 'vant'
   import Axios from "axios";
   import PubSub from 'pubsub-js'
+  import {post} from "../../util/axiosUtil";
+  import {setLocalStorage} from "../../util/utils";
   export default {
     components: {
       VanButton: Button,
@@ -46,21 +49,17 @@
         let params = new URLSearchParams();
         params.append('email', this.email);
         params.append('password',this.password);
-        Axios.post("http://127.0.0.1:8088/mstore/login",params).then((response)=>{
-       // Axios.post("http://39.106.121.52:8088/mstore/login",params).then((response)=>{
+        post("login",params).then(response=>{
           let res = response.data;
           if(res.code===200){
-            Notify({ type: 'success', message: "登录成功！" });
-            console.log(res.data);
+            Notify({ type: 'success',duration:1500, message: "登录成功！" });
+            setLocalStorage("user-login-info",res.data,720); //缓存用户数据到localstorage 一个月
             this.$router.push({ path:'/mine'});
-            sessionStorage.setItem("userInfo-session",JSON.stringify(res.data));
           }else {
-            Notify({ type: 'danger', message: res.data  });
+            Notify({ type: 'danger',duration:1500, message: res.data  });
           }
         });
-        console.log('submit', values);
-      },
-
+      }
     }
   }
 </script>

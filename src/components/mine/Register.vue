@@ -82,7 +82,6 @@
         //console.log('submit', values);
         //let params = new URLSearchParams();
         //let user = JSON.stringify(values);
-        console.log("user"+JSON.stringify(this.user));
         Axios.post("http://39.106.121.52:8088/mstore/register",this.user).then((response)=>{
           //  Axios.post("http://127.0.0.1:8088/mstore/register",this.user).then((response)=>{
           let res = response.data;

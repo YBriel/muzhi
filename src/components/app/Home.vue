@@ -6,7 +6,7 @@
 </template>
 
 <script>
-  import Header from '../header/Header'
+  import Header from '../body/Header'
   import Body from '../body/Body'
     export default {
       components: {

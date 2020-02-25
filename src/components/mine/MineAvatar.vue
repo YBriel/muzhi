@@ -19,13 +19,13 @@
       </van-col>
     </van-row>
   </div>
-
 </template>
 
 <script>
   import {Image} from 'vant';
   import {Divider, Col, Row} from 'vant';
   import PubSub from 'pubsub-js'
+  import {getLocalStorage} from "../../util/utils";
 
   export default {
     components: {
@@ -42,23 +42,12 @@
       }
     },
     mounted() {
-      let item = sessionStorage.getItem('userInfo-session');
-      if(item!==undefined){
-        let parse = JSON.parse(item);
-        //console.log(parse);
-        this.name = parse.name;
+      let item = getLocalStorage("user-login-info"); //获取本地用户信息
+      if(item!==null){
+        this.name = item.name;
       }else {
         this.name="请登录"
       }
-
-/*      console.log("item" + JSON.stringify(item));
-      PubSub.subscribe("UserNameToAvatar", (msg, data) => {
-        if (data === "success") {
-          let item = sessionStorage.getItem('userInfo-session');
-          console.log("item" + JSON.stringify(item));
-          this.name = item;
-        }
-      })*/
     }
   }
 </script>

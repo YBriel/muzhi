@@ -16,11 +16,10 @@
 <script>
   import ShoppingItems from "../shoppingcar/ShoppingItem";
   import ShoppingSubmit from "../shoppingcar/ShoppingSubmit";
-  import Footer from "../footer/Footer";
+  import Footer from "../body/Footer";
   import PubSub from 'pubsub-js'
 
   import {NavBar, Notify, Toast} from 'vant';
-  import Axios from "axios";
 
   export default {
     components: {
@@ -43,52 +42,16 @@
         console.log("接收到事件" + JSON.stringify(orderCopy));
       },
       swipeDel(index) {
-        // console.log("index是"+index);
         this.order.splice(index, 1);
-        //console.log(JSON.stringify(this.orderCopy));
       }
     },
     created() {
 
     },
     mounted() {
-    /*  let orderElement = this.order;
-      for (let i = 0; i < orderElement.length; i++) {
-        let orderCopyTemp = {
-          id: 1,
-          price: 1,
-          num: 1,
-          check: true,
-          status: 1
-        };
-        orderCopyTemp.id = orderElement[i].id;
-        orderCopyTemp.price = orderElement[i].price;
-        orderCopyTemp.num = orderElement[i].num;
-        orderCopyTemp.check = false;
-        orderCopyTemp.status = 1;
-        this.orderCopy.push(orderCopyTemp);
-      }*/
       PubSub.subscribe("AddNewItem",(msg,data)=>{
         console.log(data);
       })
-
-      /*PubSub.subscribe("AddToCart", (msg, data) => {
-        //console.log("购物车收到消息"+data);
-        let orderCopyTemp = {
-          id: 1,
-          price: 1,
-          num: 1,
-          check: true,
-          status: 1
-        };
-        orderCopyTemp.id = data.id;
-        orderCopyTemp.price = data.price;
-        orderCopyTemp.num = data.num;
-        orderCopyTemp.check = true;
-        orderCopyTemp.status = 1;
-        this.orderCopy.push(orderCopyTemp);
-      });*/
-
     },
 
   }

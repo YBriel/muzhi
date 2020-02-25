@@ -8,6 +8,10 @@ import MineRegister from "../components/mine/Register";
 import Login from "../components/mine/Login";
 import MyAddress from "../components/mine/MyAddress";
 import MyCouponList from "../components/mine/MyCouponList";
+import TestPage from "../components/mine/TestPage";
+import ShoppingCarConfirm from "../components/shoppingcar/ShoppingCarConfirm";
+import SubmitOrder from "../components/order/SubmitOrder";
+
 Vue.use(Router);
 
 export default new Router({
@@ -34,21 +38,35 @@ export default new Router({
       component: Mine
     },
     {
-      path:'/MineRegister',
+      path: '/MineRegister',
       component: MineRegister
     },
     {
-      path:'/login',
+      path: '/login',
       component: Login
     },
     {
-      path:'/myAddress',
-      component:MyAddress
+      path: '/myAddress',
+      component: MyAddress
     },
     {
-      path:'/myCouponList',
-      component:MyCouponList
+      path: '/myCouponList',
+      component: MyCouponList
+    },
+    {
+      path: '/testPage',
+      component: TestPage
+    },
+    {
+      path: '/shoppingCarConfirm',
+      component: ShoppingCarConfirm
     }
+    ,
+    {
+      path: '/submitOrder',
+      component: SubmitOrder
+    }
+
   ]
 
 })
