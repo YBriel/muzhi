@@ -141,10 +141,10 @@
       },
     },
     mounted() {
-      PubSUb.subscribe("goCheckBill",(msg,data)=>{
+/*      PubSUb.subscribe("goCheckBill",(msg,data)=>{
         console.log("购物车要结算的货物");
         console.log(JSON.parse(data));
-      })
+      })*/
     }
   }
 </script>

@@ -1,14 +1,12 @@
 <template>
-  <div>
-    <!--  <van-button type="default" @click="printResult()">默认按钮</van-button>-->
-
+  <div id="myCart">
     <van-check-box-group v-model="checkResult">
       <van-row v-for="(item,index) in orderCopy" :key="index">
         <van-col span="2">
           <van-check-box class="checkClass" :id="index" :name="orderCopy[index].id"
                          @click="computePrice1(index)"/>
         </van-col>
-        <van-col span="21">
+        <van-col span="22">
           <van-swipe-cell>
             <van-card
               :num=orderCopy[index].num
@@ -41,7 +39,7 @@
   import {Card, Button, Checkbox, CheckboxGroup, Cell, Stepper, SwipeCell, Col, Row, Toast, Notify} from 'vant';
   import PubSub from 'pubsub-js'
   import Axios from "axios";
-  import {getLocalStorage} from "../../util/utils";
+  import {getLocalStorage, setLocalStorage} from "../../util/utils";
 
   export default {
     components: {
@@ -224,7 +222,7 @@
       });
       PubSub.subscribe("goCheck", (msg, data) => {
         if(data==="1"){
-          PubSub.publish("goCheckBill",JSON.stringify(this.product1));
+         setLocalStorage("cart-to-pay",this.product1,720);
           this.$router.replace("/submitOrder");
         }
         //console.log("收到提交订单请求"+data);
@@ -284,6 +282,16 @@
 
   .checkClass {
     margin-top: 50px;
+  }
+
+  #myCart {
+    overflow: auto;
+    height: 500px;
+    width: auto;
+  }
+
+  #myCart::-webkit-scrollbar {
+    border-width:1px;
   }
 
 </style>
