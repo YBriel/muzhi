@@ -1,6 +1,6 @@
 <template>
   <div>
-  <Swipe :autoplay="3000" indicator-color="green" >
+  <Swipe :height="180" :autoplay="3000" indicator-color="green" >
     <SwipeItem><img src="http://39.106.121.52:8088/store/static/swiper.jpeg" alt="小丸子"></SwipeItem>
     <SwipeItem><img src="http://39.106.121.52:8088/store/static/swiper.jpeg" alt="1"></SwipeItem>
     <SwipeItem><img src="http://39.106.121.52:8088/store/static/swiper.jpeg" alt="1"></SwipeItem>
@@ -8,7 +8,6 @@
     <SwipeItem><img src="http://39.106.121.52:8088/store/static/swiper.jpeg" alt="1"></SwipeItem>
   </Swipe>
   <bodyGrid/>
-    <bodyItems/>
   </div>
 </template>
 

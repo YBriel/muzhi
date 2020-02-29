@@ -14,6 +14,7 @@
               :desc=orderCopy[index].desc
               :title=orderCopy[index].title
               thumb="https://img.yzcdn.cn/vant/ipad.jpeg"
+
             >
               <div slot="footer">
                 <!--id=10086 step="1"   :value="order[index].num"-->
@@ -91,7 +92,6 @@
       },
       swipeDel(index) {
         this.orderCopy.splice(index, 1);
-        this.$emit('swipeDel', index);
       },
       computePriceTemp() {
         let tempArr = [];
@@ -102,12 +102,13 @@
           }
         }
         this.checkedOrder = tempArr;
-        if( this.orderCopy.length===this.checkedOrder.length){
+        if(this.checkedOrder.length===0){
+          PubSub.publish("isAllCheck",false);
+        }else if( this.orderCopy.length===this.checkedOrder.length){
           PubSub.publish("isAllCheck",true);
         }else if(this.orderCopy.length!==this.checkedOrder.length){
           PubSub.publish("isAllCheck",false);
         }
-       // console.log("选择的订单为" + JSON.stringify(this.checkedOrder));
         for (let j = 0; j < tempArr.length; j++) {
           tempTotalPrice += tempArr[j].price * tempArr[j].num;
         }
@@ -138,8 +139,6 @@
         }
         let totalTem=this.totalPrice/100;
         this.product1.price=totalTem.toFixed(2);
-       // console.log(JSON.stringify(this.product1));
-        //console.log("价格计算完成" + this.totalPrice);
       },
       addItemToCard(data) {
         let item = sessionStorage.getItem('userInfo-session');

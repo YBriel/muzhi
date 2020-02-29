@@ -61,7 +61,7 @@
 </template>
 
 <script>
-  import {NavBar, Card, Stepper, SubmitBar, Panel, Popup, Picker, Field,Notify} from 'vant'
+  import {NavBar, Card, Stepper, SubmitBar, Panel, Popup, Picker, Field, Notify, Toast} from 'vant'
   import PubSUb from 'pubsub-js'
   import {getLocalStorage} from "../../util/utils";
 
@@ -85,11 +85,18 @@
         showPicker: false,
         cartInfo: {},
         cartArr: [],
-        totalPrice: ""
+        totalPrice: "",
       }
     },
     methods: {
       onSubmit() {
+        let item = getLocalStorage("user-login-info"); //获取本地用户信息
+        console.log("信息啊"+JSON.stringify(item));
+        if(item===null){
+          Toast.fail({duration:500, message:'请登录！'});
+        }else {
+          this.cartInfo.uid=item.id;
+        }
         this.postJson("aliPay/aliWapPay", this.cartInfo).then(response => {
           console.log("支付返回值"+JSON.stringify(response));
           let res = response.data;
@@ -130,6 +137,7 @@
   }
 
   #orderList::-webkit-scrollbar {
+    overflow: auto;
     border-width: 1px;
   }
 </style>

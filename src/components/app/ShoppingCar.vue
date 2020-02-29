@@ -6,7 +6,7 @@
         left-arrow/>
     </div>
     <div>
-      <ShoppingItems @computeTotalPrice="computeTotalPrice"  @swipeDel="swipeDel"/>
+      <ShoppingItems @computeTotalPrice="computeTotalPrice"/>
       <ShoppingSubmit/>
     </div>
   </div>
@@ -41,9 +41,9 @@
         //未选中任何商品
         console.log("接收到事件" + JSON.stringify(orderCopy));
       },
-      swipeDel(index) {
+/*      swipeDel(index) {
         this.order.splice(index, 1);
-      }
+      }*/
     },
     created() {
 

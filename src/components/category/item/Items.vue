@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="myItem">
     <div v-for="(item,index) in siderbarGoods" :key="item.id">
       <van-card
         :desc=item.desc
@@ -18,9 +18,8 @@
 </template>
 
 <script>
-  import {Card, Button, Tag, Stepper, Icon, Notify, Toast} from 'vant';
+  import {Button, Card, Icon, Notify, Stepper, Tag, Toast} from 'vant';
   import PubSub from 'pubsub-js'
-  import Axios from "axios";
   import {getLocalStorage} from "../../../util/utils";
   import {post} from "../../../util/axiosUtil";
 
@@ -43,7 +42,8 @@
     },
     data() {
       return {
-        imgUrl: './static/ani.ico'
+        imgUrl: './static/ani.ico',
+        userInfo:{}
       }
     },
     methods: {
@@ -51,13 +51,15 @@
         //console.log(JSON.stringify(e));
       },
       addShoppingCar(e, index) {
-        let item = getLocalStorage("user-login-info"); //获取本地用户信息
-        if(item===null){
+        let item=this.userInfo;
+        console.log(item);
+        console.log(item==null);
+        if(null===this.item){
           Toast.fail({duration:500, message:'请登录！'});
         }else {
           PubSub.publish("AddToCart", this.siderbarGoods[index]);
           let params = new URLSearchParams();
-          params.append('userId', item.id);
+          params.append('userId',item.id);
           params.append('pid', this.siderbarGoods[index].id);
           post("addToCard",params).then(response=>{
             let res = response.data;
@@ -69,10 +71,17 @@
           });
         }
       }
+    },mounted() {
+       //获取本地用户信息
+      this.userInfo=getLocalStorage("user-login-info");
     }
   }
 </script>
 
 <style scoped>
-
+  #myItem{
+    overflow: auto;
+    height: 210px;
+    width: auto;
+  }
 </style>

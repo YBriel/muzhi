@@ -56,7 +56,7 @@
             setLocalStorage("user-login-info",res.data,720); //缓存用户数据到localstorage 一个月
             this.$router.push({ path:'/mine'});
           }else {
-            Notify({ type: 'danger',duration:1500, message: res.data  });
+            Notify({ type: 'danger',duration:1500, message: "账号或密码错误！"  });
           }
         });
       }

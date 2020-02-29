@@ -78,7 +78,7 @@
         params.append("parentId", index+1);
         //let user = JSON.stringify(values);
        // Axios.post("http://127.0.0.1:8088/mstore/listByProductId", params).then((response) => {
-        Axios.post("http://39.106.121.52:8088/mstore/listByProductId", params).then((response) => {
+        this.post("listByProductId",params).then(response=> {
           let res = response.data;
           if (res.code === 200) {
             let result = res.data;
@@ -99,7 +99,7 @@
               this.siderbarGoods.push(goodsTemp);
             }
           } else {
-             Notify({type: 'danger', message: "抱歉，系统开小差了"});
+            Notify({type: 'danger', message: "抱歉，系统开小差了"});
           }
         });
       }

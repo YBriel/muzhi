@@ -11,6 +11,7 @@ import MyCouponList from "../components/mine/MyCouponList";
 import TestPage from "../components/mine/TestPage";
 import ShoppingCarConfirm from "../components/shoppingcar/ShoppingCarConfirm";
 import SubmitOrder from "../components/order/SubmitOrder";
+import ImFrame from "../components/im/ImFrame";
 
 Vue.use(Router);
 
@@ -60,11 +61,14 @@ export default new Router({
     {
       path: '/shoppingCarConfirm',
       component: ShoppingCarConfirm
-    }
-    ,
+    },
     {
       path: '/submitOrder',
       component: SubmitOrder
+    },
+    {
+      path: '/im',
+      component: ImFrame
     }
 
   ]
